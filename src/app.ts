@@ -23,6 +23,7 @@ app.use((req: Request, res: Response, next: NextFunction) => {
   User.findByPk(1)
     .then((user) => {
       // req.user = user;
+      console.log(user);
     })
     .catch((err) => console.log(err));
 });
@@ -36,12 +37,12 @@ app.use((error: any, req: Request, res: Response, next: NextFunction) => {
 
 User.hasMany(Recipe);
 Recipe.belongsTo(User, { constraints: true });
-Recipe.hasMany(Ingredient);
 Ingredient.belongsToMany(Recipe, { through: "recipeIngredients" });
+Recipe.belongsToMany(Ingredient, { through: "recipeIngredients" });
 
 sequelize
-  .sync({ force: true })
-  // .sync()
+  // .sync({ force: true })
+  .sync()
   .then((result) => {
     return User.findByPk(1);
   })
